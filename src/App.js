@@ -493,7 +493,7 @@ const FormBuilder = () => {
                 handleFieldDelete(field.id);
               }}
             >
-              🗑️
+              ×
             </button>
           </div>
           
@@ -1270,7 +1270,7 @@ const FormBuilder = () => {
           <button className="toolbar-btn copy-json" onClick={exportForm}>
             Copy form's JSON
           </button>
-          <button className="toolbar-btn paste-json" onClick={() => document.getElementById('import-file').click()}>
+          <button className="toolbar-btn paste-json" onClick={() => document.getElementById('toolbar-import-file').click()}>
             Paste form's JSON
           </button>
           <button 
@@ -1314,6 +1314,15 @@ const FormBuilder = () => {
           </button>
         </div>
       </div>
+
+      {/* Hidden file input for toolbar import */}
+      <input 
+        type="file" 
+        accept=".json" 
+        onChange={importForm}
+        id="toolbar-import-file"
+        style={{ display: 'none' }}
+      />
 
       <div className="form-builder-main">
         {/* Professional Component Palette */}

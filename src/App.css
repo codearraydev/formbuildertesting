@@ -336,21 +336,28 @@ body {
 
 .template-btn {
   width: 100%;
-  background: #10b981;
+  background: linear-gradient(135deg, #374151, #4b5563);
   color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 12px;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  padding: 12px 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .template-btn:hover {
-  background: #059669;
+  background: linear-gradient(135deg, #4b5563, #6b7280);
+  border-color: #6b7280;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .form-actions {
@@ -361,33 +368,48 @@ body {
 
 .action-btn {
   width: 100%;
-  background: #6b7280;
+  background: linear-gradient(135deg, #1f2937, #374151);
   color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 12px;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 12px 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .action-btn:hover {
-  background: #4b5563;
+  background: linear-gradient(135deg, #374151, #4b5563);
+  border-color: #4b5563;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .action-btn.ai-scan {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  border-color: #8b5cf6;
+}
+
+.action-btn.ai-scan:hover {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  border-color: #a78bfa;
 }
 
 .action-btn.clear {
-  background: #ef4444;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border-color: #ef4444;
 }
 
 .action-btn.clear:hover {
-  background: #dc2626;
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  border-color: #dc2626;
 }
 
 /* Professional Form Canvas */
@@ -507,46 +529,41 @@ body {
 }
 
 .field-action-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: #ef4444;
   color: white !important;
   border: none;
-  border-radius: 6px;
-  width: 28px;
-  height: 28px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-  transition: all 0.2s ease;
-  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+  transition: all 0.15s ease;
+  font-weight: 700;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+.field-action-btn:hover {
+  background: #dc2626;
+  opacity: 1;
+  transform: scale(1.15);
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.5);
+}
+
+.field-action-btn:active {
+  background: #b91c1c;
+  transform: scale(1.05);
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.4);
 }
 
 .field-action-btn * {
   color: white !important;
-}
-
-.field-action-btn:hover {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  color: white !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-}
-
-.field-action-btn:hover * {
-  color: white !important;
-}
-
-.field-action-btn:active {
-  background: linear-gradient(135deg, #b91c1c, #991b1b);
-  color: white !important;
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
-}
-
-.field-action-btn:active * {
-  color: white !important;
+  font-size: 12px;
+  line-height: 1;
 }
 
 .field-label {
@@ -835,31 +852,14 @@ body {
   background: #2563eb;
 }
 
-.action-btn {
-  width: 100%;
-  background: #6b7280;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 8px;
-}
-
-.action-btn:hover {
-  background: #4b5563;
-  transform: translateY(-1px);
-}
-
 .action-btn.delete-btn {
-  background: #ef4444;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border-color: #ef4444;
 }
 
 .action-btn.delete-btn:hover {
-  background: #dc2626;
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  border-color: #dc2626;
 }
 
 .no-selection {

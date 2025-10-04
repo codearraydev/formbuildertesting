@@ -26,39 +26,83 @@ const FormBuilder = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAIScanning, setIsAIScanning] = useState(false);
   const [aiScanModal, setAiScanModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('components');
+  const [activePropertyTab, setActivePropertyTab] = useState('main');
+  const [deviceView, setDeviceView] = useState('desktop');
+  const [showPreview, setShowPreview] = useState(false);
+  const [componentSearch, setComponentSearch] = useState('');
 
   const componentTypes = [
-    // Basic Input Fields
-    { type: 'text', label: 'Text Input', icon: '📝', category: 'basic' },
-    { type: 'email', label: 'Email', icon: '📧', category: 'basic' },
-    { type: 'password', label: 'Password', icon: '🔒', category: 'basic' },
-    { type: 'number', label: 'Number', icon: '🔢', category: 'basic' },
-    { type: 'textarea', label: 'Text Area', icon: '📄', category: 'basic' },
-    { type: 'url', label: 'URL', icon: '🔗', category: 'basic' },
-    { type: 'tel', label: 'Phone', icon: '📞', category: 'basic' },
-    { type: 'date', label: 'Date Picker', icon: '📅', category: 'basic' },
-    { type: 'time', label: 'Time', icon: '⏰', category: 'basic' },
-    { type: 'datetime-local', label: 'Date & Time', icon: '📅⏰', category: 'basic' },
+    // Input & Control Elements
+    { type: 'text', label: 'Text Input', icon: '📝', category: 'input' },
+    { type: 'email', label: 'Email', icon: '📧', category: 'input' },
+    { type: 'password', label: 'Password', icon: '🔒', category: 'input' },
+    { type: 'number', label: 'Number', icon: '🔢', category: 'input' },
+    { type: 'textarea', label: 'Text Area', icon: '📄', category: 'input' },
+    { type: 'url', label: 'URL', icon: '🔗', category: 'input' },
+    { type: 'tel', label: 'Phone', icon: '📞', category: 'input' },
+    { type: 'date', label: 'Date Picker', icon: '📅', category: 'input' },
+    { type: 'time', label: 'Time Picker', icon: '⏰', category: 'input' },
+    { type: 'datetime-local', label: 'Date & Time', icon: '📅⏰', category: 'input' },
+    { type: 'pattern', label: 'Pattern Format', icon: '🔤', category: 'input' },
+    { type: 'rich-text', label: 'Rich Text Editor', icon: '✏️', category: 'input' },
+    { type: 'signature', label: 'Signature', icon: '✍️', category: 'input' },
+    { type: 'toggle', label: 'Toggle', icon: '🔄', category: 'input' },
+    { type: 'button', label: 'Button', icon: '🔘', category: 'input' },
+    { type: 'search', label: 'Search', icon: '🔍', category: 'input' },
+    { type: 'tag-picker', label: 'Tag Picker', icon: '🏷️', category: 'input' },
+    { type: 'uploader', label: 'Uploader', icon: '📤', category: 'input' },
     
-    // Selection Fields
+    // Selection Elements
     { type: 'select', label: 'Select Dropdown', icon: '📋', category: 'selection' },
-    { type: 'radio', label: 'Radio Buttons', icon: '🔘', category: 'selection' },
+    { type: 'radio', label: 'Radio Group', icon: '🔘', category: 'selection' },
     { type: 'checkbox', label: 'Checkbox', icon: '☑️', category: 'selection' },
+    { type: 'multiselect', label: 'Multi Select', icon: '📋+', category: 'selection' },
     
-    // File Upload Fields
-    { type: 'file', label: 'File Upload', icon: '📁', category: 'file' },
-    { type: 'image', label: 'Image Upload', icon: '🖼️', category: 'file' },
-    { type: 'pdf', label: 'PDF Upload', icon: '📄', category: 'file' },
+    // Display & Layout Elements
+    { type: 'header', label: 'Header', icon: '📰', category: 'display' },
+    { type: 'label', label: 'Label', icon: '🏷️', category: 'display' },
+    { type: 'divider', label: 'Divider', icon: '➖', category: 'display' },
+    { type: 'image', label: 'Image', icon: '🖼️', category: 'display' },
+    { type: 'link', label: 'Link', icon: '🔗', category: 'display' },
+    { type: 'message', label: 'Message', icon: '💬', category: 'display' },
+    { type: 'static-content', label: 'Static Content', icon: '📄', category: 'display' },
+    { type: 'tooltip', label: 'Tooltip', icon: '💡', category: 'display' },
+    { type: 'qr-code', label: 'QR Code', icon: '📱', category: 'display' },
+    { type: 'progress-circle', label: 'Progress Circle', icon: '⭕', category: 'display' },
+    { type: 'progress-line', label: 'Progress Line', icon: '📊', category: 'display' },
     
-    // Layout Components
-    { type: 'heading', label: 'Heading', icon: '📰', category: 'layout' },
-    { type: 'separator', label: 'Separator', icon: '➖', category: 'layout' },
-    { type: 'column-2', label: '2 Column Layout', icon: '📊', category: 'layout' },
-    { type: 'column-3', label: '3 Column Layout', icon: '📈', category: 'layout' },
+    // Structure Elements
+    { type: 'container', label: 'Container', icon: '📦', category: 'structure' },
+    { type: 'card', label: 'Card', icon: '🃏', category: 'structure' },
+    { type: 'column', label: 'Column', icon: '📊', category: 'structure' },
+    { type: 'column-group', label: 'Column Group', icon: '📈', category: 'structure' },
+    { type: 'cell', label: 'Cell', icon: '⬜', category: 'structure' },
+    { type: 'header-cell', label: 'Header Cell', icon: '📋', category: 'structure' },
+    { type: 'table', label: 'Table', icon: '📊', category: 'structure' },
+    { type: 'repeater', label: 'Repeater', icon: '🔄', category: 'structure' },
+    { type: 'tab', label: 'Tab', icon: '📑', category: 'structure' },
+    { type: 'wizard', label: 'Wizard', icon: '🧙', category: 'structure' },
+    { type: 'wizard-step', label: 'Wizard Step', icon: '👣', category: 'structure' },
+    { type: 'breadcrumb', label: 'Breadcrumb', icon: '🍞', category: 'structure' },
+    { type: 'menu', label: 'Menu', icon: '📋', category: 'structure' },
     
-    // Advanced Fields
+    // Modal Elements
+    { type: 'modal', label: 'Modal', icon: '🪟', category: 'modal' },
+    { type: 'modal-layout', label: 'Modal Layout', icon: '🏗️', category: 'modal' },
+    
+    // Placeholder Elements
+    { type: 'placeholder-graph', label: 'Placeholder Graph', icon: '📈', category: 'placeholder' },
+    { type: 'placeholder-grid', label: 'Placeholder Grid', icon: '🔲', category: 'placeholder' },
+    { type: 'placeholder-paragraph', label: 'Placeholder Paragraph', icon: '📝', category: 'placeholder' },
+    
+    // Advanced Elements
     { type: 'range', label: 'Range Slider', icon: '🎚️', category: 'advanced' },
-    { type: 'color', label: 'Color Picker', icon: '🎨', category: 'advanced' }
+    { type: 'color', label: 'Color Picker', icon: '🎨', category: 'advanced' },
+    { type: 'rating', label: 'Rating', icon: '⭐', category: 'advanced' },
+    { type: 'calculation', label: 'Calculation', icon: '🧮', category: 'advanced' },
+    { type: 'conditional', label: 'Conditional', icon: '🔀', category: 'advanced' },
+    { type: 'slot', label: 'Slot', icon: '🎰', category: 'advanced' }
   ];
 
   // Drag and Drop Handlers
@@ -431,13 +475,12 @@ const FormBuilder = () => {
   const renderField = (field, index) => {
     const isSelected = selectedField === field.id;
     
-    return (
+  return (
       <div 
         key={field.id} 
         className={`form-field-wrapper ${isSelected ? 'selected' : ''}`}
         onClick={() => handleFieldSelect(field.id)}
         style={{ 
-          width: field?.styling?.width || '100%',
           gridColumn: field?.styling?.gridColumn || 'span 12'
         }}
       >
@@ -504,8 +547,8 @@ const FormBuilder = () => {
             />
           )}
         </div>
-      </div>
-    );
+    </div>
+  );
   };
 
   // Form Templates
@@ -1190,167 +1233,326 @@ const FormBuilder = () => {
 
   const selectedFieldData = selectedField ? formData.fields.find(field => field.id === selectedField) : null;
 
+  // Filter components based on search
+  const filteredComponents = componentTypes.filter(comp => 
+    comp.label.toLowerCase().includes(componentSearch.toLowerCase()) ||
+    comp.type.toLowerCase().includes(componentSearch.toLowerCase())
+  );
+
+  // Group components by category
+  const componentsByCategory = filteredComponents.reduce((acc, comp) => {
+    if (!acc[comp.category]) acc[comp.category] = [];
+    acc[comp.category].push(comp);
+    return acc;
+  }, {});
+
   return (
     <div className="form-builder-app">
-      <div className="form-builder-header">
-        <div className="header-left">
-          <div className="logo-section">
-            <div className="logo-icon">📋</div>
-            <div className="logo-text">
-              <h1>FormBuilder Pro</h1>
-              <span>Professional Drag & Drop Form Builder</span>
-            </div>
-          </div>
+      {/* Professional Top Toolbar */}
+      <div className="top-toolbar">
+        <div className="toolbar-left">
+          <button className="toolbar-btn hamburger">
+            <span>☰</span>
+          </button>
+          <button className="toolbar-btn undo">
+            <span>↶</span>
+          </button>
+          <button className="toolbar-btn redo">
+            <span>↷</span>
+          </button>
+          <button className="toolbar-btn refresh">
+            <span>🔄</span>
+          </button>
+          <span className="version">v7.3.0</span>
         </div>
         
-        <div className="header-center">
-          <div className="form-title-section">
-            <input 
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              className="form-title-input"
-              placeholder="Enter form title..."
-            />
-            <textarea 
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              className="form-description-input"
-              placeholder="Enter form description..."
-              rows="2"
-            />
-          </div>
+        <div className="toolbar-center">
+          <button className="toolbar-btn copy-json" onClick={exportForm}>
+            Copy form's JSON
+          </button>
+          <button className="toolbar-btn paste-json" onClick={() => document.getElementById('import-file').click()}>
+            Paste form's JSON
+          </button>
+          <button 
+            className={`toolbar-btn preview ${showPreview ? 'active' : ''}`}
+            onClick={() => setShowPreview(!showPreview)}
+          >
+            ▶️ Preview
+          </button>
         </div>
         
-        <div className="header-right">
-          <div className="header-actions">
+        <div className="toolbar-right">
+          <div className="device-views">
             <button 
-              className={`mode-btn ${isPreviewMode ? 'active' : ''}`}
-              onClick={() => setIsPreviewMode(!isPreviewMode)}
+              className={`device-btn ${deviceView === 'desktop' ? 'active' : ''}`}
+              onClick={() => setDeviceView('desktop')}
             >
-              {isPreviewMode ? '✏️ Edit Mode' : '👁️ Preview Mode'}
+              🖥️
             </button>
-            
-            <div className="action-group">
-              <button className="export-btn" onClick={exportForm}>
-                📤 Export
-              </button>
-              <label className="import-btn">
-                📥 Import
-                <input 
-                  type="file" 
-                  accept=".json" 
-                  onChange={importForm}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </div>
-            
-            <div className="action-group">
-              <button className="ai-scan-btn" onClick={() => setAiScanModal(true)}>
-                🤖 AI Scan
-              </button>
-              <button className="arrange-btn" onClick={() => console.log('Auto Arrange')}>
-                🔧 Auto Arrange
-              </button>
-              <button className="clear-btn" onClick={clearForm}>
-                🗑️ Clear
-              </button>
-            </div>
+            <button 
+              className={`device-btn ${deviceView === 'tablet' ? 'active' : ''}`}
+              onClick={() => setDeviceView('tablet')}
+            >
+              📱
+            </button>
+            <button 
+              className={`device-btn ${deviceView === 'mobile' ? 'active' : ''}`}
+              onClick={() => setDeviceView('mobile')}
+            >
+              📱
+            </button>
           </div>
+          <button className="toolbar-btn code-view">
+            &lt;/&gt;
+          </button>
+          <div className="language-selector">
+            <span>EN</span>
+            <span>▼</span>
+          </div>
+          <button className="toolbar-btn settings">
+            ⚙️
+          </button>
         </div>
       </div>
 
       <div className="form-builder-main">
         {/* Professional Component Palette */}
         <div className="component-palette">
-          <div className="palette-header">
-            <h3>Components</h3>
-            <div className="palette-search">
-              <input 
-                type="text" 
-                placeholder="Search components..."
-                className="palette-search-input"
-              />
-            </div>
+          <div className="palette-tabs">
+            <button 
+              className={`palette-tab ${activeTab === 'components' ? 'active' : ''}`}
+              onClick={() => setActiveTab('components')}
+            >
+              Components
+            </button>
+            <button 
+              className={`palette-tab ${activeTab === 'tree' ? 'active' : ''}`}
+              onClick={() => setActiveTab('tree')}
+            >
+              Tree
+            </button>
+            <button 
+              className={`palette-tab ${activeTab === 'settings' ? 'active' : ''}`}
+              onClick={() => setActiveTab('settings')}
+            >
+              Settings
+            </button>
+            <button 
+              className={`palette-tab ${activeTab === 'forms' ? 'active' : ''}`}
+              onClick={() => setActiveTab('forms')}
+            >
+              Forms
+            </button>
           </div>
           
-          <div className="palette-categories">
-            {['basic', 'selection', 'file', 'layout', 'advanced', 'display', 'special'].map(category => (
-              <div key={category} className="palette-category">
-                <div className="category-header">
-                  <span className="category-title">{category.charAt(0).toUpperCase() + category.slice(1)}</span>
-                  <span className="category-count">
-                    {componentTypes.filter(comp => comp.category === category).length}
-                  </span>
-                </div>
-                <div className="category-items">
-                  {componentTypes
-                    .filter(comp => comp.category === category)
-                    .map(comp => (
-                      <div
-                        key={comp.type}
-                        className="component-item"
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, comp)}
-                      >
-                        <div className="component-icon">{comp.icon}</div>
-                        <div className="component-label">{comp.label}</div>
-                      </div>
-                    ))}
-                </div>
+          {activeTab === 'components' && (
+            <>
+              <div className="palette-search">
+                <input 
+                  type="text" 
+                  placeholder="Search..."
+                  className="palette-search-input"
+                  value={componentSearch}
+                  onChange={(e) => setComponentSearch(e.target.value)}
+                />
+                <span className="search-icon">🔍</span>
               </div>
-            ))}
-          </div>
+              
+              <div className="palette-content">
+                {Object.entries(componentsByCategory).map(([category, components]) => (
+                  <div key={category} className="palette-category">
+                    <div className="category-items">
+                      {components.map(comp => (
+                        <div
+                          key={comp.type}
+                          className="component-item"
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, comp)}
+                        >
+                          <div className="component-icon">{comp.icon}</div>
+                          <div className="component-label">{comp.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          
+          {activeTab === 'tree' && (
+            <div className="tree-view">
+              <div className="tree-item">
+                <span className="tree-icon">📋</span>
+                <span className="tree-label">Form</span>
+              </div>
+              {formData.fields.map(field => (
+                <div key={field.id} className="tree-item tree-field">
+                  <span className="tree-icon">{componentTypes.find(c => c.type === field.type)?.icon || '📝'}</span>
+                  <span className="tree-label">{field.label}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {activeTab === 'settings' && (
+            <div className="settings-panel">
+              <div className="setting-group">
+                <label>Form Title</label>
+                <input 
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                  className="setting-input"
+                />
+              </div>
+              <div className="setting-group">
+                <label>Form Description</label>
+                <textarea 
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  className="setting-textarea"
+                  rows="3"
+                />
+              </div>
+              <div className="setting-group">
+                <label>Grid Columns</label>
+                <select 
+                  value={formData.layout.columns}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    layout: { ...prev.layout, columns: parseInt(e.target.value) }
+                  }))}
+                  className="setting-select"
+                >
+                  <option value="12">12 Columns</option>
+                  <option value="6">6 Columns</option>
+                  <option value="4">4 Columns</option>
+                  <option value="3">3 Columns</option>
+                </select>
+              </div>
+            </div>
+          )}
+          
+          {activeTab === 'forms' && (
+            <div className="forms-panel">
+              <div className="form-templates">
+                <h4>Quick Start Templates</h4>
+                <button className="template-btn" onClick={() => loadTemplate('contact')}>
+                  📞 Contact Form
+                </button>
+                <button className="template-btn" onClick={() => loadTemplate('survey')}>
+                  📊 Survey Form
+                </button>
+                <button className="template-btn" onClick={() => loadTemplate('registration')}>
+                  📝 Registration Form
+                </button>
+                <button className="template-btn" onClick={() => loadTemplate('bir1706')}>
+                  🏛️ BIR Form 1706
+                </button>
+              </div>
+              <div className="form-actions">
+                <button className="action-btn" onClick={exportForm}>
+                  📤 Export Form
+                </button>
+                <label className="action-btn">
+                  📥 Import Form
+                  <input 
+                    type="file" 
+                    accept=".json" 
+                    onChange={importForm}
+                    id="import-file"
+                    style={{ display: 'none' }}
+                  />
+                </label>
+                <button className="action-btn ai-scan" onClick={() => setAiScanModal(true)}>
+                  🤖 AI Scan
+                </button>
+                <button className="action-btn clear" onClick={clearForm}>
+                  🗑️ Clear Form
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Professional Form Canvas */}
-        <div className="form-canvas">
-          <div className="canvas-header">
-            <div className="canvas-info">
-              <span className="field-count">{formData.fields.length} fields</span>
-              <span className="canvas-mode">{isPreviewMode ? 'Preview Mode' : 'Edit Mode'}</span>
-            </div>
-            <div className="canvas-actions">
-              <button className="canvas-btn" onClick={() => console.log('Layout Toggle')}>
-                {formData.layout?.autoArrange ? '🔧 Manual Layout' : '🔧 Auto Layout'}
-              </button>
-            </div>
-          </div>
-          
-          <div 
-            className={`form-canvas-area ${isPreviewMode ? 'preview-mode' : 'edit-mode'}`}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
-            {formData.fields.length === 0 ? (
-              <div className="empty-canvas">
-                <div className="empty-icon">📋</div>
-                <h3>Start Building Your Form</h3>
-                <p>Drag components from the left panel to begin creating your form</p>
-                <div className="quick-start">
-                  <button className="quick-start-btn" onClick={() => setAiScanModal(true)}>
-                    🤖 AI Scan Document
-                  </button>
-                  <div className="template-buttons">
-                    <button className="template-btn" onClick={() => loadTemplate('contact')}>
-                      📞 Contact Form
-                    </button>
-                    <button className="template-btn" onClick={() => loadTemplate('survey')}>
-                      📊 Survey Form
-                    </button>
-                    <button className="template-btn" onClick={() => loadTemplate('registration')}>
-                      📝 Registration Form
-                    </button>
-                    <button className="template-btn" onClick={() => loadTemplate('bir1706')}>
-                      🏛️ BIR Form 1706
-                    </button>
+        <div className={`form-canvas ${deviceView}`}>
+          <div className="canvas-content">
+            {showPreview ? (
+              <div className="preview-mode">
+                <div className="preview-form">
+                  <h1 className="form-title">{formData.title}</h1>
+                  <p className="form-description">{formData.description}</p>
+                  <div className="preview-fields">
+                    {formData.fields.map(field => (
+                      <div key={field.id} className="preview-field">
+                        <label className="preview-label">
+                          {field.label}
+                          {field.required && <span className="required">*</span>}
+                        </label>
+                        {field.type === 'textarea' ? (
+                          <textarea 
+                            placeholder={field.placeholder}
+                            className="preview-input"
+                            rows="3"
+                          />
+                        ) : field.type === 'select' ? (
+                          <select className="preview-input">
+                            <option value="">{field.placeholder}</option>
+                            {field.options?.map((option, idx) => (
+                              <option key={idx} value={option}>{option}</option>
+                            ))}
+                          </select>
+                        ) : field.type === 'radio' ? (
+                          <div className="preview-radio-group">
+                            {field.options?.map((option, idx) => (
+                              <label key={idx} className="preview-radio">
+                                <input type="radio" name={field.id} value={option} />
+                                {option}
+                              </label>
+                            ))}
+                          </div>
+                        ) : field.type === 'checkbox' ? (
+                          <div className="preview-checkbox-group">
+                            {field.options?.map((option, idx) => (
+                              <label key={idx} className="preview-checkbox">
+                                <input type="checkbox" value={option} />
+                                {option}
+                              </label>
+                            ))}
+                          </div>
+                        ) : field.type === 'header' ? (
+                          <h3 className="preview-header">{field.label}</h3>
+                        ) : (
+                          <input 
+                            type={field.type}
+                            placeholder={field.placeholder}
+                            className="preview-input"
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="form-grid">
-                {formData.fields.map((field, index) => renderField(field, index))}
+              <div 
+                className="form-canvas-area"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
+                {formData.fields.length === 0 ? (
+                  <div className="empty-canvas">
+                    <div className="empty-icon">📋</div>
+                    <h3>Start Building Your Form</h3>
+                    <p>Drag components from the left panel to begin creating your form</p>
+                  </div>
+                ) : (
+                  <div className="form-grid">
+                    {formData.fields.map((field, index) => renderField(field, index))}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1358,89 +1560,325 @@ const FormBuilder = () => {
 
         {/* Professional Property Panel */}
         <div className="property-panel">
-          <div className="panel-header">
-            <h3>Properties</h3>
-            {selectedFieldData && (
-              <div className="selected-field-info">
-                <span className="field-type">{selectedFieldData.type}</span>
-                <span className="field-id">#{selectedFieldData.id}</span>
-              </div>
-            )}
+          <div className="property-tabs">
+            <button 
+              className={`property-tab ${activePropertyTab === 'main' ? 'active' : ''}`}
+              onClick={() => setActivePropertyTab('main')}
+            >
+              Main
+            </button>
+            <button 
+              className={`property-tab ${activePropertyTab === 'style' ? 'active' : ''}`}
+              onClick={() => setActivePropertyTab('style')}
+            >
+              Style
+            </button>
+            <button 
+              className={`property-tab ${activePropertyTab === 'actions' ? 'active' : ''}`}
+              onClick={() => setActivePropertyTab('actions')}
+            >
+              Actions
+            </button>
+            <button 
+              className={`property-tab ${activePropertyTab === 'rules' ? 'active' : ''}`}
+              onClick={() => setActivePropertyTab('rules')}
+            >
+              Rules
+            </button>
           </div>
           
-          <div className="panel-content">
+          <div className="property-content">
             {selectedFieldData ? (
-              <div className="property-sections">
-                <div className="property-section">
-                  <h4>Basic Properties</h4>
-                  <div className="property-group">
-                    <label>Field Label</label>
-                    <input 
-                      type="text" 
-                      value={selectedFieldData?.label || ''}
-                      onChange={(e) => handleFieldUpdate(selectedField, { label: e.target.value })}
-                      placeholder="Enter field label" 
-                    />
-                  </div>
-                  
-                  <div className="property-group">
-                    <label>Placeholder Text</label>
-                    <input 
-                      type="text" 
-                      value={selectedFieldData?.placeholder || ''}
-                      onChange={(e) => handleFieldUpdate(selectedField, { placeholder: e.target.value })}
-                      placeholder="Enter placeholder" 
-                    />
-                  </div>
-                  
-                  <div className="property-group">
-                    <label>
+              <>
+                <div className="selected-field-info">
+                  <span className="field-type">{selectedFieldData.type}</span>
+                  <span className="field-id">#{selectedFieldData.id}</span>
+                </div>
+                
+                {activePropertyTab === 'main' && (
+                  <div className="property-section">
+                    <div className="property-group">
+                      <label>Key *</label>
                       <input 
-                        type="checkbox" 
-                        checked={selectedFieldData?.required || false}
-                        onChange={(e) => handleFieldUpdate(selectedField, { required: e.target.checked })}
+                        type="text" 
+                        value={selectedFieldData.id}
+                        onChange={(e) => handleFieldUpdate(selectedField, { id: e.target.value })}
+                        className="property-input"
                       />
-                      Required Field
-                    </label>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Data key</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData.id}
+                        onChange={(e) => handleFieldUpdate(selectedField, { id: e.target.value })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Label</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.label || ''}
+                        onChange={(e) => handleFieldUpdate(selectedField, { label: e.target.value })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Placeholder</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.placeholder || ''}
+                        onChange={(e) => handleFieldUpdate(selectedField, { placeholder: e.target.value })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Size</label>
+                      <select className="property-select">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                      </select>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>
+                        <input type="checkbox" />
+                        Disabled
+                      </label>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>
+                        <input type="checkbox" />
+                        Read only
+                      </label>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Type</label>
+                      <select 
+                        value={selectedFieldData?.type || 'text'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { type: e.target.value })}
+                        className="property-select"
+                      >
+                        <option value="text">Text</option>
+                        <option value="email">Email</option>
+                        <option value="password">Password</option>
+                        <option value="number">Number</option>
+                        <option value="tel">Phone</option>
+                        <option value="url">URL</option>
+                        <option value="date">Date</option>
+                        <option value="time">Time</option>
+                        <option value="textarea">Textarea</option>
+                        <option value="select">Select</option>
+                        <option value="radio">Radio</option>
+                        <option value="checkbox">Checkbox</option>
+                      </select>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Value</label>
+                      <input 
+                        type="text" 
+                        className="property-input"
+                        placeholder="Enter default value"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>
+                        <input type="checkbox" />
+                        Password mask
+                      </label>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>ARIA label for show password button</label>
+                      <input 
+                        type="text" 
+                        value="Show password"
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>
+                        <input type="checkbox" />
+                        Tooltip
+                      </label>
+                    </div>
+                    
+                    <div className="additional-properties">
+                      <h4>Additional properties</h4>
+                      <div className="property-group">
+                        <label>Render</label>
+                        <input type="text" className="property-input" />
+                      </div>
+                      <div className="property-group">
+                        <label>When</label>
+                        <input type="text" className="property-input" />
+                      </div>
+                      <div className="property-group">
+                        <label>HTML attributes</label>
+                        <input type="text" className="property-input" />
+                      </div>
+                      <button className="add-property-btn">+</button>
+                    </div>
                   </div>
-                </div>
-
-                <div className="property-section">
-                  <h4>Layout & Styling</h4>
-                  <div className="property-group">
-                    <label>Field Width</label>
-                    <select 
-                      value={selectedFieldData?.styling?.width || '100%'}
-                      onChange={(e) => handleFieldUpdate(selectedField, { 
-                        styling: { 
-                          ...(selectedFieldData?.styling || {}), 
-                          width: e.target.value,
-                          gridColumn: e.target.value === '100%' ? 'span 12' : 
-                                     e.target.value === '50%' ? 'span 6' : 
-                                     e.target.value === '33%' ? 'span 4' : 'span 3'
-                        } 
-                      })}
-                    >
-                      <option value="100%">Full Width</option>
-                      <option value="50%">Half Width</option>
-                      <option value="33%">Third Width</option>
-                      <option value="25%">Quarter Width</option>
-                    </select>
+                )}
+                
+                {activePropertyTab === 'style' && (
+                  <div className="property-section">
+                    <div className="property-group">
+                      <label>Width</label>
+                      <select 
+                        value={selectedFieldData?.styling?.width || '100%'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { 
+                          styling: { 
+                            ...(selectedFieldData?.styling || {}), 
+                            width: e.target.value,
+                            gridColumn: e.target.value === '100%' ? 'span 12' : 
+                                       e.target.value === '50%' ? 'span 6' : 
+                                       e.target.value === '33%' ? 'span 4' : 'span 3'
+                          } 
+                        })}
+                        className="property-select"
+                      >
+                        <option value="100%">Full Width</option>
+                        <option value="50%">Half Width</option>
+                        <option value="33%">Third Width</option>
+                        <option value="25%">Quarter Width</option>
+                      </select>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Margin</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.styling?.margin || '0 0 16px 0'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { 
+                          styling: { 
+                            ...(selectedFieldData?.styling || {}), 
+                            margin: e.target.value 
+                          } 
+                        })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Padding</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.styling?.padding || '8px'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { 
+                          styling: { 
+                            ...(selectedFieldData?.styling || {}), 
+                            padding: e.target.value 
+                          } 
+                        })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Border</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.styling?.border || '1px solid #ddd'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { 
+                          styling: { 
+                            ...(selectedFieldData?.styling || {}), 
+                            border: e.target.value 
+                          } 
+                        })}
+                        className="property-input"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Border Radius</label>
+                      <input 
+                        type="text" 
+                        value={selectedFieldData?.styling?.borderRadius || '4px'}
+                        onChange={(e) => handleFieldUpdate(selectedField, { 
+                          styling: { 
+                            ...(selectedFieldData?.styling || {}), 
+                            borderRadius: e.target.value 
+                          } 
+                        })}
+                        className="property-input"
+                      />
+                    </div>
                   </div>
-                </div>
-
-                <div className="property-section">
-                  <h4>Actions</h4>
-                  <div className="property-group">
-                    <button 
-                      className="action-btn delete-btn"
-                      onClick={() => handleFieldDelete(selectedField)}
-                    >
-                      🗑️ Delete Field
-                    </button>
+                )}
+                
+                {activePropertyTab === 'actions' && (
+                  <div className="property-section">
+                    <div className="property-group">
+                      <button 
+                        className="action-btn delete-btn"
+                        onClick={() => handleFieldDelete(selectedField)}
+                      >
+                        🗑️ Delete Field
+                      </button>
+                    </div>
+                    
+                    <div className="property-group">
+                      <button className="action-btn">
+                        📋 Duplicate Field
+                      </button>
+                    </div>
+                    
+                    <div className="property-group">
+                      <button className="action-btn">
+                        ⬆️ Move Up
+                      </button>
+                    </div>
+                    
+                    <div className="property-group">
+                      <button className="action-btn">
+                        ⬇️ Move Down
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </div>
+                )}
+                
+                {activePropertyTab === 'rules' && (
+                  <div className="property-section">
+                    <div className="property-group">
+                      <label>
+                        <input type="checkbox" checked={selectedFieldData?.required || false} />
+                        Required Field
+                      </label>
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Validation Rules</label>
+                      <textarea 
+                        className="property-textarea"
+                        placeholder="Enter validation rules..."
+                        rows="3"
+                      />
+                    </div>
+                    
+                    <div className="property-group">
+                      <label>Error Message</label>
+                      <input 
+                        type="text" 
+                        className="property-input"
+                        placeholder="Custom error message"
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="no-selection">
                 <div className="no-selection-icon">👆</div>

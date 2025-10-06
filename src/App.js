@@ -1495,7 +1495,13 @@ const FormBuilder = () => {
                   <p className="form-description">{formData.description}</p>
                   <div className="preview-fields">
                     {formData.fields.map(field => (
-                      <div key={field.id} className="preview-field">
+                      <div 
+                        key={field.id} 
+                        className="preview-field"
+                        style={{ 
+                          gridColumn: field?.styling?.gridColumn || 'span 12'
+                        }}
+                      >
                         <label className="preview-label">
                           {field.label}
                           {field.required && <span className="required">*</span>}
